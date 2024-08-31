@@ -1,0 +1,133 @@
+package com.example.demo3;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+
+import java.io.*;
+import java.util.Optional;
+import java.util.Scanner;
+
+public class MainGeneratorApp extends Application {
+
+
+
+    public static com.example.demo3.PigLatin PigLatin;
+    private TextField FirstNameField;
+    private TextField lastNameField;
+    private TextField userNameField;
+    private Label passwordLabel;
+
+
+
+    public void start(Stage stage) throws IOException{
+        BackgroundFill background_fill = new BackgroundFill(Color.WHITE,
+                CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(background_fill);
+        InputStream stream = new FileInputStream("/Users/nurqistinaaliesa/Downloads/pass.png");
+        Image image = new Image(stream);
+
+        ImageView imageView = new ImageView(image);
+
+        imageView.setFitHeight(170);
+        imageView.setPreserveRatio(true);
+
+        Button startButton = new Button("Start");
+        startButton.setOnAction(e -> {
+            Main(stage);
+        });
+
+        VBox root = new VBox(10);
+        root.getChildren().addAll(imageView, startButton);
+        root.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(root,400,250);
+        stage.setTitle("Start Screen");
+        stage.setScene(scene);
+        root.setBackground(background);
+
+        stage.show();
+    }
+
+    public static void main(String[] args) throws IOException {
+        launch(args);
+    }
+
+
+    public void Main(Stage primaryStage)  {
+
+        primaryStage.setTitle("Password Generator");
+
+        BackgroundFill background_fill = new BackgroundFill(Color.LIGHTYELLOW,
+                CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(background_fill);
+
+
+        Label FirstNameLabel = new Label("Enter your first name:");
+        FirstNameField = new TextField();
+        FirstNameLabel.setFont(Font.font("Times New Roman",15 ));
+        Label lastNameLabel = new Label("Enter your last name:");
+        lastNameField = new TextField();
+        lastNameLabel.setFont(Font.font("Times New Roman",15 ));
+        Label userNameLabel = new Label("Enter your preferred username:");
+        userNameField = new TextField();
+        userNameLabel.setFont(Font.font("Times New Roman",15 ));
+        Button generateButton = new Button("Generate Password");
+        passwordLabel = new Label();
+
+
+
+
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.add(FirstNameLabel, 0, 0);
+        gridPane.add(FirstNameField, 1, 0);
+        gridPane.add(lastNameLabel, 0, 1);
+        gridPane.add(lastNameField, 1, 1);
+        gridPane.add(userNameLabel, 0, 2);
+        gridPane.add(userNameField, 1, 2);
+        gridPane.add(generateButton, 0, 3, 2, 1);
+        gridPane.add(passwordLabel, 0, 4, 2, 1);
+
+
+        generateButton.setOnAction(event -> generatePassword());
+        gridPane.setBackground(background);
+
+
+        Scene scene = new Scene(gridPane, 400, 250);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void generatePassword() {
+        String lastName = lastNameField.getText();
+        String userName = userNameField.getText();
+
+        PasswordGenerator password = new PasswordGenerator(userName, lastName);
+        String generatedPassword = password.generatePassword();
+        passwordLabel.setText("Your generated password is : " + generatedPassword);
+    }
+
+
+
+
+
+    }
+
+
